@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   SIGNAVERSE — Global Design System
+   ============================================================ */
+
+@layer base {
+  :root {
+    --primary: #4C1D95;
+    --primary-light: #7C3AED;
+    --primary-dark: #2E1065;
+    --secondary: #A78BFA;
+    --accent: #F59E0B;
+    --aqua: #06B6D4;
+    --success: #10B981;
+    --error: #F87171;
+    --background: #0F0A1E;
+    --surface: #1A1235;
+    --surface-elevated: #231A45;
+    --text: #F3F0FF;
+    --text-muted: #9D8EC7;
+    --text-subtle: #5E5280;
+    --border: rgba(167, 139, 250, 0.15);
+    --border-bright: rgba(167, 139, 250, 0.35);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body, #root {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--surface);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-light);
+    border-radius: 100px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+  }
+
+  ::selection {
+    background: rgba(124, 58, 237, 0.4);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* ---- Buttons ---- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl font-display font-700 transition-all duration-200 select-none cursor-pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-light text-white px-6 py-3 text-base;
+    box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+  }
+  .btn-primary:hover {
+    @apply bg-primary;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124,58,237,0.5);
+  }
+  .btn-primary:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  .btn-accent {
+    @apply btn px-6 py-3 text-base text-white;
+    background: linear-gradient(135deg, #F59E0B, #EF4444);
+    box-shadow: 0 4px 16px rgba(245,158,11,0.4);
+  }
+  .btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245,158,11,0.5);
+  }
+
+  .btn-ghost {
+    @apply btn px-6 py-3 text-base;
+    color: var(--secondary);
+    border: 1px solid var(--border-bright);
+  }
+  .btn-ghost:hover {
+    background: rgba(167,139,250,0.1);
+    transform: translateY(-1px);
+  }
+
+  .btn-icon {
+    @apply btn w-10 h-10 p-0 rounded-xl;
+  }
+
+  /* ---- Cards ---- */
+  .card {
+    @apply rounded-3xl;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  .card-elevated {
+    @apply card;
+    background: var(--surface-elevated);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+  }
+
+  .card-glass {
+    @apply rounded-3xl;
+    background: rgba(26,18,53,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-bright);
+  }
+
+  /* ---- Inputs ---- */
+  .input {
+    @apply w-full px-4 py-3 rounded-2xl text-base outline-none transition-all duration-200;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+  }
+  .input::placeholder {
+    color: var(--text-subtle);
+  }
+  .input:focus {
+    border-color: var(--primary-light);
+    background: rgba(124,58,237,0.08);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  }
+  .input-error {
+    border-color: var(--error) !important;
+    box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important;
+  }
+
+  /* ---- Badge ---- */
+  .badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-display font-700;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+  .badge-primary { background: rgba(124,58,237,0.2); color: var(--secondary); }
+  .badge-accent { background: rgba(245,158,11,0.2); color: var(--accent); }
+  .badge-success { background: rgba(16,185,129,0.2); color: var(--success); }
+  .badge-error { background: rgba(248,113,113,0.2); color: var(--error); }
+  .badge-aqua { background: rgba(6,182,212,0.2); color: var(--aqua); }
+
+  /* ---- XP Bar ---- */
+  .xp-bar-track {
+    @apply w-full rounded-full overflow-hidden;
+    height: 8px;
+    background: rgba(167,139,250,0.15);
+  }
+  .xp-bar-fill {
+    @apply h-full rounded-full transition-all duration-1000;
+    background: linear-gradient(90deg, #A78BFA 0%, #7C3AED 100%);
+    box-shadow: 0 0 10px rgba(124,58,237,0.6);
+  }
+
+  /* ---- Gradient Text ---- */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #A78BFA, #4C1D95);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-aqua {
+    background: linear-gradient(135deg, #67E8F9, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ---- World Node ---- */
+  .world-node {
+    @apply relative flex items-center justify-center rounded-full cursor-pointer transition-all duration-300;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .world-node:hover {
+    transform: translateY(-4px) scale(1.05);
+  }
+  .world-node-locked {
+    @apply opacity-50 cursor-not-allowed;
+    filter: grayscale(0.7);
+  }
+  .world-node-locked:hover {
+    transform: none;
+  }
+
+  /* ---- Nav Item ---- */
+  .nav-item {
+    @apply flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-200;
+    color: var(--text-subtle);
+  }
+  .nav-item.active {
+    color: var(--secondary);
+  }
+  .nav-item.active .nav-icon {
+    background: rgba(167,139,250,0.15);
+  }
+  .nav-icon {
+    @apply w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200;
+  }
+
+  /* ---- Lesson Card ---- */
+  .lesson-step {
+    @apply card p-4 transition-all duration-300 cursor-pointer;
+    border-left: 3px solid transparent;
+  }
+  .lesson-step:hover {
+    border-left-color: var(--primary-light);
+    transform: translateX(4px);
+  }
+  .lesson-step.completed {
+    border-left-color: var(--success);
+    background: rgba(16,185,129,0.05);
+  }
+  .lesson-step.active {
+    border-left-color: var(--accent);
+    background: rgba(245,158,11,0.05);
+  }
+
+  /* ---- Streak Fire ---- */
+  .streak-badge {
+    @apply badge;
+    background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(245,158,11,0.2));
+    color: #FCD34D;
+    border: 1px solid rgba(245,158,11,0.3);
+  }
+
+  /* ---- Coin Badge ---- */
+  .coin-badge {
+    @apply badge;
+    background: rgba(245,158,11,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(245,158,11,0.25);
+  }
+
+  /* ---- Loading Skeleton ---- */
+  .skeleton {
+    @apply rounded-2xl;
+    background: linear-gradient(90deg, var(--surface) 25%, var(--surface-elevated) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@layer utilities {
+  .font-700 { font-weight: 700; }
+  .font-800 { font-weight: 800; }
+  .font-900 { font-weight: 900; }
+
+  .text-text { color: var(--text); }
+  .text-muted { color: var(--text-muted); }
+  .text-subtle { color: var(--text-subtle); }
+
+  .bg-surface { background-color: var(--surface); }
+  .bg-surface-elevated { background-color: var(--surface-elevated); }
+  .bg-background { background-color: var(--background); }
+
+  .border-border { border-color: var(--border); }
+  .border-border-bright { border-color: var(--border-bright); }
+
+  .full-screen {
+    width: 100vw;
+    min-height: 100vh;
+  }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

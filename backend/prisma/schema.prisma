@@ -1,0 +1,176 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                        String                     @id @default(cuid())
+  email                     String                     @unique
+  passwordHash              String
+  role                      String                     @default("STUDENT") // STUDENT, TEACHER, ADMIN
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  profile                   Profile?
+  progress                  Progress[]
+  practiceSessions          PracticeSession[]
+  userAchievements          UserAchievement[]
+  userRewards               UserReward[]
+  dailyChallengeCompletions DailyChallengeCompletion[]
+}
+
+model Profile {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName  String
+  avatarUrl    String?
+  xp           Int      @default(0)
+  level        Int      @default(1)
+  coins        Int      @default(0)
+  streak       Int      @default(0)
+  lastActiveAt DateTime @default(now())
+}
+
+model World {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  emoji       String
+  order       Int
+  colorTheme  String
+  unlocksAtXP Int      @default(0)
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id               String            @id @default(cuid())
+  worldId          String
+  world            World             @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  title            String
+  description      String
+  order            Int
+  xpReward         Int
+  coinReward       Int
+  signs            Sign[]
+  progress         Progress[]
+  practiceSessions PracticeSession[]
+}
+
+model Sign {
+  id          String   @id @default(cuid())
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  word        String
+  description String
+  videoUrl    String?
+  imageUrl    String?
+  order       Int
+}
+
+model Progress {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completed   Boolean   @default(false)
+  accuracy    Float?
+  completedAt DateTime?
+
+  @@unique([userId, lessonId])
+}
+
+model PracticeSession {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  startedAt DateTime         @default(now())
+  results   PracticeResult[]
+}
+
+model PracticeResult {
+  id         String          @id @default(cuid())
+  sessionId  String
+  session    PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  signId     String
+  confidence Float
+  correct    Boolean
+  xpEarned   Int
+  createdAt  DateTime        @default(now())
+}
+
+model Achievement {
+  id               String            @id @default(cuid())
+  slug             String            @unique
+  name             String
+  description      String
+  iconUrl          String?
+  xpReward         Int
+  condition        String            // JSON string containing condition rule
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  unlockedAt    DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+}
+
+model Reward {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  name        String
+  description String
+  type        String       // BADGE, TITLE, AVATAR_ITEM, COIN_PACK
+  imageUrl    String?
+  userRewards UserReward[]
+}
+
+model UserReward {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewardId String
+  reward   Reward   @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+  earnedAt DateTime @default(now())
+}
+
+model DailyChallenge {
+  id          String                     @id @default(cuid())
+  date        String                     @unique // YYYY-MM-DD
+  signId      String
+  xpReward    Int
+  coinReward  Int
+  completions DailyChallengeCompletion[]
+}
+
+model DailyChallengeCompletion {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeId String
+  challenge   DailyChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  completedAt DateTime       @default(now())
+
+  @@unique([userId, challengeId])
+}
+
+model Device {
+  id       String    @id @default(cuid())
+  userId   String
+  deviceId String
+  type     String    // smart_glove, camera
+  lastSeen DateTime?
+}
