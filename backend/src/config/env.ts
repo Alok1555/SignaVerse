@@ -10,7 +10,7 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('15m'),
   JWT_REFRESH_SECRET: z.string().default('signaverse-super-refresh-secret-key-change-in-prod'),
   JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
-  CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  CORS_ORIGIN: z.string().default('http://localhost:5173,https://signaverse.vercel.app'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
